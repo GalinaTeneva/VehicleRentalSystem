@@ -12,9 +12,8 @@ namespace VehicleRentalSystem.Models
         private string vehicleBrand;
         private string vehicleModel;
         private decimal vehicleValue;
-        private int rentalPeriod;
 
-        public Vehicle(string brand, string model, decimal vehicleValue, int period)
+        public Vehicle(string brand, string model, decimal vehicleValue)
         {
             this.VehicleBrand = brand;
             this.VehicleModel = model;
@@ -37,12 +36,6 @@ namespace VehicleRentalSystem.Models
         {
             get { return this.vehicleValue; }
             set { this.vehicleValue = value; }
-        }
-
-        public int RentalPeriod
-        {
-            get { return this.rentalPeriod; }
-            set { this.rentalPeriod = value; }
         }
     }
 }

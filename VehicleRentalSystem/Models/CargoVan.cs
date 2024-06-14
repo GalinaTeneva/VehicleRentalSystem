@@ -11,7 +11,7 @@ namespace VehicleRentalSystem.Models
         private int driverExperience;
 
         public CargoVan(string brand, string model, decimal vehicleValue, int period) 
-            : base(brand, model, vehicleValue, period)
+            : base(brand, model, vehicleValue)
         {
         }
 

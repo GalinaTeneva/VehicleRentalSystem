@@ -10,8 +10,8 @@ namespace VehicleRentalSystem.Models
     public class Car : Vehicle
     {
         private CarSafetyRating safetyRating;
-        public Car(string brand, string model, decimal vehicleValue, int period, CarSafetyRating safetyRating) 
-            : base(brand, model, vehicleValue, period)
+        public Car(string brand, string model, decimal vehicleValue, CarSafetyRating safetyRating) 
+            : base(brand, model, vehicleValue)
         {
         }
 
