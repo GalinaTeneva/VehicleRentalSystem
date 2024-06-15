@@ -116,9 +116,9 @@ namespace VehicleRentalSystem
             return insuranceCost;
         }
 
-        private int CalcRentalPeriod(DateTime reservationStartDate, DateTime reservationEndDate)
+        public int CalcRentalPeriod(DateTime startDate, DateTime endDate)
         {
-            TimeSpan difference = reservationEndDate - reservationStartDate;
+            TimeSpan difference = endDate - startDate;
             return difference.Days;
         }
     }
