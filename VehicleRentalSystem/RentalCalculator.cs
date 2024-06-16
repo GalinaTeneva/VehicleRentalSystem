@@ -5,12 +5,12 @@ namespace VehicleRentalSystem
 {
     public class RentalCalculator
     {
-        private decimal carDailyRate;   // daily rate for less than a week
-        private decimal carWeeklyRate;  // daily rate for more than a week
-        private decimal motorcycleDailyRate;
-        private decimal motorcycleWeeklyRate;
-        private decimal cargoVanDailyRate;
-        private decimal cargoVanWeeklyRate;
+        private readonly decimal carDailyRate;   // daily rate for less than a week
+        private readonly decimal carWeeklyRate;  // daily rate for more than a week
+        private readonly decimal motorcycleDailyRate;
+        private readonly decimal motorcycleWeeklyRate;
+        private readonly decimal cargoVanDailyRate;
+        private readonly decimal cargoVanWeeklyRate;
 
         public RentalCalculator()
         {
@@ -38,7 +38,7 @@ namespace VehicleRentalSystem
             return totalCost;
         }
 
-        public decimal GetInsuranceChange (Vehicle vehicle, DateTime reservationStartDate, DateTime reservationEndDate, DateTime actualReturnDate)
+        public decimal GetInsuranceChange (Vehicle vehicle)
         {
             decimal insuranceChange = 0;
 

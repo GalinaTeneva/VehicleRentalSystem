@@ -31,10 +31,10 @@ namespace VehicleRentalSystem
             int reservedRentalDays = calculator.CalcRentalPeriod(reservationStartDate, reservationEndDate);
             int actualRentalDays = calculator.CalcRentalPeriod(reservationStartDate, actualReturnDate);
 
-            decimal daylyRentalCost = calculator.GetDailyRentalCost(rentedVehicle, reservedRentalDays);
+            decimal dailyRentalCost = calculator.GetDailyRentalCost(rentedVehicle, reservedRentalDays);
 
             decimal baseDailyInsuranceCost = calculator.GetBaseInsuranceCost(rentedVehicle);
-            decimal insuranceChange = calculator.GetInsuranceChange(rentedVehicle, reservationStartDate, reservationEndDate, actualReturnDate);
+            decimal insuranceChange = calculator.GetInsuranceChange(rentedVehicle);
 
             decimal actualDailyInsuranceCost = insuranceChange == 0 ? baseDailyInsuranceCost : (baseDailyInsuranceCost * insuranceChange);
             decimal totalInsuranceCost = actualDailyInsuranceCost * reservedRentalDays;
@@ -51,20 +51,20 @@ namespace VehicleRentalSystem
             sb.AppendLine($"Actual Return date: {actualReturnDate.ToString("yyyy-MM-dd")}");
             sb.AppendLine($"Actual rental days: {actualRentalDays} days").AppendLine();
 
-            sb.AppendLine($"Rental cost per day: ${daylyRentalCost:F2}");
+            sb.AppendLine($"Rental cost per day: ${dailyRentalCost:F2}");
 
-            if (insuranceChange == 0)
+            if (insuranceChange == 0) //In the insurance cost is not changed
             {
                 sb.AppendLine($"Insurance per day: ${actualDailyInsuranceCost:F2}").AppendLine();
             }
-            else if (insuranceChange > 1)
+            else if (insuranceChange > 1)   //If the insurance cost is increased
             {
                 decimal insuranceChangeValue = actualDailyInsuranceCost - baseDailyInsuranceCost;
                 sb.AppendLine($"Initial insurance per day: ${baseDailyInsuranceCost:F2}");
                 sb.AppendLine($"Insurance addition per day: ${insuranceChangeValue:F2}");
                 sb.AppendLine($"Insurance per day: ${(actualDailyInsuranceCost):F2}").AppendLine();
             }
-            else if (insuranceChange < 1)
+            else if (insuranceChange < 1)   //If the insurance cost is decreased
             {
                 decimal insuranceChangeValue = baseDailyInsuranceCost - actualDailyInsuranceCost;
                 sb.AppendLine($"Initial insurance per day: ${baseDailyInsuranceCost:F2}");
@@ -72,13 +72,10 @@ namespace VehicleRentalSystem
                 sb.AppendLine($"Insurance per day: ${(actualDailyInsuranceCost):F2}").AppendLine();
             }
 
-            //sb.AppendLine("Early return discount for rent: ");
-            //sb.AppendLine("Early return discount for insurance: ").AppendLine();
-
             decimal earlyReturnInsuranceDiscount = 0;
             if(actualRentalDays < reservedRentalDays)
             {
-                sb.AppendLine($"Early return discount for rent: ${((reservedRentalDays * daylyRentalCost) - totalRentalCost):F2}");
+                sb.AppendLine($"Early return discount for rent: ${((reservedRentalDays * dailyRentalCost) - totalRentalCost):F2}");
 
                 int daysDiff = reservedRentalDays - actualRentalDays;
                 earlyReturnInsuranceDiscount = daysDiff * actualDailyInsuranceCost;
