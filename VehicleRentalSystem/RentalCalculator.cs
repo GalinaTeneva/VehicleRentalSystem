@@ -42,41 +42,42 @@ namespace VehicleRentalSystem
             return totalCost;
         }
 
-        public decimal CalcTotalInsuranceCost (Vehicle vehicle, DateTime reservationStartDate, DateTime reservationEndDate, DateTime actualReturnDate)
+        public decimal GetInsuranceChange (Vehicle vehicle, DateTime reservationStartDate, DateTime reservationEndDate, DateTime actualReturnDate)
         {
             int reservedDays = CalcRentalPeriod(reservationStartDate, reservationEndDate);
             int actualDays = CalcRentalPeriod(reservationStartDate, actualReturnDate);
 
-            decimal baseInsuranceCost = GetBaseInsuranceCost(vehicle);
+            decimal insuranceChange = 0;
 
             if (vehicle is Car car)
             {
                 if (car.SafetyRating == Common.CarSafetyRating.High || car.SafetyRating == Common.CarSafetyRating.VeryHigh)
                 {
-                    baseInsuranceCost *= 0.9m; // 10% discount for high safety rating
+                    insuranceChange = 0.9m; // 10% discount for high safety rating
                 }
             }
             else if (vehicle is Motorcycle motorcycle)
             {
                 if (motorcycle.RiderAge < 25)
                 {
-                    baseInsuranceCost *= 1.2m; // 20% increase for riders under 25
+                    insuranceChange = 1.2m; // 20% increase for riders under 25
                 }
             }
             else if (vehicle is CargoVan cargoVan)
             {
                 if (cargoVan.DriverExperience > 5)
                 {
-                    baseInsuranceCost *= 0.85m; // 15% discount for experienced drivers
+                    insuranceChange = 0.85m; // 15% discount for experienced drivers
                 }
             }
 
-            decimal totalInsuranceCost = baseInsuranceCost * actualDays;
+            //decimal totalInsuranceCost = baseInsuranceCost * actualDays;
 
-            return totalInsuranceCost;
+            //return totalInsuranceCost;
+            return insuranceChange;
         }
 
-        private decimal GetDailyRentalCost(Vehicle vehicle, int reservedDays)
+        public decimal GetDailyRentalCost(Vehicle vehicle, int reservedDays)
         {
             decimal rentalCost = 0;
 
@@ -96,7 +97,7 @@ namespace VehicleRentalSystem
             return rentalCost;
         }
 
-        private decimal GetBaseInsuranceCost(Vehicle vehicle)
+        public decimal GetBaseInsuranceCost(Vehicle vehicle)
         {
             decimal insuranceCost = 0;
 
@@ -113,7 +114,7 @@ namespace VehicleRentalSystem
                 insuranceCost = vehicle.VehicleValue * 0.03m;
             }
             
-            return insuranceCost;
+            return insuranceCost / 100;
         }
 
         public int CalcRentalPeriod(DateTime startDate, DateTime endDate)

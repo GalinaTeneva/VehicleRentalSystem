@@ -8,7 +8,7 @@ namespace VehicleRentalSystem.Common
 {
     public enum CarSafetyRating
     {
-        VeryLow,
+        VeryLow = 1,
         Low,
         Medium,
         High,

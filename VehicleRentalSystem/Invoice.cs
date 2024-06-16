@@ -31,9 +31,17 @@ namespace VehicleRentalSystem
             StringBuilder sb = new StringBuilder();
 
             decimal totalRentalCost = calculator.CalcTotalRentalCost(rentedVehicle, reservationStartDate, reservationEndDate, actualReturnDate);
-            decimal totalInsuranceCost = calculator.CalcTotalInsuranceCost(rentedVehicle, reservationStartDate, reservationEndDate, actualReturnDate);
+            //decimal totalInsuranceCost = calculator.CalcTotalInsuranceCost(rentedVehicle, reservationStartDate, reservationEndDate, actualReturnDate);
             int reservedRentalDays = calculator.CalcRentalPeriod(reservationStartDate, reservationEndDate);
             int actualRentalDays = calculator.CalcRentalPeriod(reservationStartDate, actualReturnDate);
+
+            decimal daylyRentalCost = calculator.GetDailyRentalCost(rentedVehicle, reservedRentalDays);
+
+            decimal baseDailyInsuranceCost = calculator.GetBaseInsuranceCost(rentedVehicle);
+            decimal insuranceChange = calculator.GetInsuranceChange(rentedVehicle, reservationStartDate, reservationEndDate, actualReturnDate);
+
+            decimal actualDailyInsuranceCost = insuranceChange == 0 ? baseDailyInsuranceCost : (baseDailyInsuranceCost * insuranceChange);
+            decimal totalInsuranceCost = actualDailyInsuranceCost * reservedRentalDays;
 
             sb.AppendLine("XXXXXXXXXX");
             sb.AppendLine($"Date: {DateTime.Now.ToString("yyyy-MM-dd")}");
@@ -42,23 +50,41 @@ namespace VehicleRentalSystem
 
             sb.AppendLine($"Reservation start date: {reservationStartDate.ToString("yyyy-MM-dd")}");
             sb.AppendLine($"Reservation end date: {reservationEndDate.ToString("yyyy-MM-dd")}");
-            sb.AppendLine($"Reserved rental days:{reservedRentalDays} days").AppendLine();
+            sb.AppendLine($"Reserved rental days: {reservedRentalDays} days").AppendLine();
 
             sb.AppendLine($"Actual Return date: {actualReturnDate.ToString("yyyy-MM-dd")}");
             sb.AppendLine($"Actual rental days: {actualRentalDays} days").AppendLine();
 
-            //Edit RentalCalculator in order to fill in the lines below!!!
-            sb.AppendLine("Rental cost per day: ");
-            sb.AppendLine("Initial insurance per day: ");
-            sb.AppendLine("Insurance discount per day: ");
-            sb.AppendLine("Insurance per day: ").AppendLine();
+            sb.AppendLine($"Rental cost per day: ${daylyRentalCost:F2}");
 
-            sb.AppendLine("Early return discount for rent: ");
-            sb.AppendLine("Early return discount for insurance: ").AppendLine();
+            if (insuranceChange == 0)
+            {
+                sb.AppendLine($"Insurance per day: ${actualDailyInsuranceCost:F2}").AppendLine();
+            }
+            else if (insuranceChange > 0)
+            {
+                decimal insuranceChangeValue = actualDailyInsuranceCost - baseDailyInsuranceCost;
+                sb.AppendLine($"Initial insurance per day: ${baseDailyInsuranceCost:F2}");
+                sb.AppendLine($"Insurance addition per day: ${insuranceChangeValue:F2}");
+                sb.AppendLine($"Insurance per day: ${(actualDailyInsuranceCost):F2}").AppendLine();
+            }
+            else
+            {
+                decimal insuranceChangeValue = baseDailyInsuranceCost - actualDailyInsuranceCost;
+                sb.AppendLine($"Initial insurance per day: ${baseDailyInsuranceCost:F2}");
+                sb.AppendLine($"Insurance addition per day: ${insuranceChangeValue:F2}");
+                sb.AppendLine($"Insurance per day: ${(actualDailyInsuranceCost):F2}").AppendLine();
+            }
 
-            sb.AppendLine("Total rent: ");
-            sb.AppendLine("Total Insurance: ");
-            sb.AppendLine("Total: ");
+            //sb.AppendLine($"Initial insurance per day: {baseInsuranceCost:C2}");
+            //sb.AppendLine("Insurance discount per day: ");
+
+            //sb.AppendLine("Early return discount for rent: ");
+            //sb.AppendLine("Early return discount for insurance: ").AppendLine();
+
+            sb.AppendLine($"Total rent: ${totalRentalCost:F2}");
+            sb.AppendLine($"Total Insurance: ${totalInsuranceCost:F2}");
+            sb.AppendLine($"Total: ${(totalRentalCost + totalInsuranceCost):F2}");
             sb.AppendLine("XXXXXXXXXX");
 
             return sb.ToString();

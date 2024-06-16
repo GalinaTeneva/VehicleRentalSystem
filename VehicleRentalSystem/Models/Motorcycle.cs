@@ -10,7 +10,7 @@ namespace VehicleRentalSystem.Models
     {
         private int riderAge;
 
-        public Motorcycle(string brand, string model, decimal vehicleValue, int period, int riderAge) 
+        public Motorcycle(string brand, string model, decimal vehicleValue, int riderAge) 
             : base(brand, model, vehicleValue)
         {
             this.riderAge = riderAge;
