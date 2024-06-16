@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VehicleRentalSystem.Models;
 
 namespace VehicleRentalSystem
@@ -44,9 +40,6 @@ namespace VehicleRentalSystem
 
         public decimal GetInsuranceChange (Vehicle vehicle, DateTime reservationStartDate, DateTime reservationEndDate, DateTime actualReturnDate)
         {
-            int reservedDays = CalcRentalPeriod(reservationStartDate, reservationEndDate);
-            int actualDays = CalcRentalPeriod(reservationStartDate, actualReturnDate);
-
             decimal insuranceChange = 0;
 
             if (vehicle is Car car)
@@ -71,9 +64,6 @@ namespace VehicleRentalSystem
                 }
             }
 
-            //decimal totalInsuranceCost = baseInsuranceCost * actualDays;
-
-            //return totalInsuranceCost;
             return insuranceChange;
         }
 

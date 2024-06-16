@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.ConstrainedExecution;
 using VehicleRentalSystem.Models;
 
 namespace VehicleRentalSystem
@@ -11,6 +10,24 @@ namespace VehicleRentalSystem
         {
             PrintCarInvoice();
             PrintMotorcycleInvoice();
+            PrintCargoVanInvoice();
+        }
+
+        private static void PrintCargoVanInvoice()
+        {
+            CargoVan cargoVan = new CargoVan("Citroen", "Jumper", 20000, 8);
+            string customerName = "John Markson";
+
+            DateTime reservationStartDate = DateTime.Parse("2024-06-03");
+            DateTime reservationEndDate = DateTime.Parse("2024-06-18");
+            DateTime actualReturnDate = DateTime.Parse("2024-06-13");
+
+            Invoice cargoVanInvoice = new Invoice(customerName, cargoVan, reservationStartDate, reservationEndDate, actualReturnDate);
+            string cargoVanInvoiceString = cargoVanInvoice.GenerateInvoice();
+
+            Console.WriteLine($"A cargo van valued at ${cargoVan.VehicleValue:F2}, and the driver has {cargoVan.DriverExperience} years of driving experience");
+            Console.WriteLine();
+            Console.WriteLine(cargoVanInvoiceString);
         }
 
         private static void PrintMotorcycleInvoice()

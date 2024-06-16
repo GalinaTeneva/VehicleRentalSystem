@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VehicleRentalSystem.Models
+﻿namespace VehicleRentalSystem.Models
 {
     public class Motorcycle : Vehicle
     {
@@ -13,7 +7,7 @@ namespace VehicleRentalSystem.Models
         public Motorcycle(string brand, string model, decimal vehicleValue, int riderAge) 
             : base(brand, model, vehicleValue)
         {
-            this.riderAge = riderAge;
+            this.RiderAge = riderAge;
         }
 
         public int RiderAge

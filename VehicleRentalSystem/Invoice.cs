@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using VehicleRentalSystem.Models;
 
 namespace VehicleRentalSystem
@@ -31,7 +28,6 @@ namespace VehicleRentalSystem
             StringBuilder sb = new StringBuilder();
 
             decimal totalRentalCost = calculator.CalcTotalRentalCost(rentedVehicle, reservationStartDate, reservationEndDate, actualReturnDate);
-            //decimal totalInsuranceCost = calculator.CalcTotalInsuranceCost(rentedVehicle, reservationStartDate, reservationEndDate, actualReturnDate);
             int reservedRentalDays = calculator.CalcRentalPeriod(reservationStartDate, reservationEndDate);
             int actualRentalDays = calculator.CalcRentalPeriod(reservationStartDate, actualReturnDate);
 
@@ -61,26 +57,36 @@ namespace VehicleRentalSystem
             {
                 sb.AppendLine($"Insurance per day: ${actualDailyInsuranceCost:F2}").AppendLine();
             }
-            else if (insuranceChange > 0)
+            else if (insuranceChange > 1)
             {
                 decimal insuranceChangeValue = actualDailyInsuranceCost - baseDailyInsuranceCost;
                 sb.AppendLine($"Initial insurance per day: ${baseDailyInsuranceCost:F2}");
                 sb.AppendLine($"Insurance addition per day: ${insuranceChangeValue:F2}");
                 sb.AppendLine($"Insurance per day: ${(actualDailyInsuranceCost):F2}").AppendLine();
             }
-            else
+            else if (insuranceChange < 1)
             {
                 decimal insuranceChangeValue = baseDailyInsuranceCost - actualDailyInsuranceCost;
                 sb.AppendLine($"Initial insurance per day: ${baseDailyInsuranceCost:F2}");
-                sb.AppendLine($"Insurance addition per day: ${insuranceChangeValue:F2}");
+                sb.AppendLine($"Insurance discount per day: ${insuranceChangeValue:F2}");
                 sb.AppendLine($"Insurance per day: ${(actualDailyInsuranceCost):F2}").AppendLine();
             }
 
-            //sb.AppendLine($"Initial insurance per day: {baseInsuranceCost:C2}");
-            //sb.AppendLine("Insurance discount per day: ");
-
             //sb.AppendLine("Early return discount for rent: ");
             //sb.AppendLine("Early return discount for insurance: ").AppendLine();
+
+            decimal earlyReturnInsuranceDiscount = 0;
+            if(actualRentalDays < reservedRentalDays)
+            {
+                sb.AppendLine($"Early return discount for rent: ${((reservedRentalDays * daylyRentalCost) - totalRentalCost):F2}");
+
+                int daysDiff = reservedRentalDays - actualRentalDays;
+                earlyReturnInsuranceDiscount = daysDiff * actualDailyInsuranceCost;
+
+                sb.AppendLine($"Early return discount for insurance: ${earlyReturnInsuranceDiscount:F2}").AppendLine();
+            }
+
+            totalInsuranceCost -= earlyReturnInsuranceDiscount;
 
             sb.AppendLine($"Total rent: ${totalRentalCost:F2}");
             sb.AppendLine($"Total Insurance: ${totalInsuranceCost:F2}");

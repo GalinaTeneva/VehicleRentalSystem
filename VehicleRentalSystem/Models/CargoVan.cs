@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VehicleRentalSystem.Models
+﻿namespace VehicleRentalSystem.Models
 {
     public class CargoVan : Vehicle
     {
         private int driverExperience;
 
-        public CargoVan(string brand, string model, decimal vehicleValue, int period) 
+        public CargoVan(string brand, string model, decimal vehicleValue, int driverExperience) 
             : base(brand, model, vehicleValue)
         {
+            this.DriverExperience = driverExperience;
         }
 
         public int DriverExperience

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VehicleRentalSystem.Common;
+﻿using VehicleRentalSystem.Common;
 
 namespace VehicleRentalSystem.Models
 {
@@ -14,7 +9,7 @@ namespace VehicleRentalSystem.Models
         public Car(string brand, string model, decimal vehicleValue, CarSafetyRating safetyRating) 
             : base(brand, model, vehicleValue)
         {
-            this.safetyRating = safetyRating;
+            this.SafetyRating = safetyRating;
         }
 
         public CarSafetyRating SafetyRating
